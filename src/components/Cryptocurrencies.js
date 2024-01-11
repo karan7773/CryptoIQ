@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useEffect, useState} from 'react'
 import millify from 'millify'
 import { Link } from 'react-router-dom'
 import { Card,Row,Col,Input } from 'antd'
@@ -7,21 +7,30 @@ import { useGetCryptosQuery } from '../services/CryptoAPI'
 const Cryptocurrencies = ({simplified}) => {
   const count=simplified?10:100;
   const {data:cryptoList,isFetching}=useGetCryptosQuery(count)
-
+  const [searchTerm,setSearchTerm]=useState('')
   const [cryptos,setCryptos]=useState(cryptoList?.data?.coins);
+
+  useEffect(()=>{
+    const filterData=cryptoList?.data?.coins.filter((coin)=>{
+      return coin.name.toLowerCase().includes(searchTerm.toLowerCase())
+    })
+    setCryptos(filterData);
+
+  },[cryptoList,searchTerm])
 
   if(isFetching) return 'Loading ...';
 
   console.log(cryptos);
-
   return (
     <>
+    {!simplified && (
       <div className='search-crypto'> 
-        <Input placeholder='Search crypto currency' onChange={(e)=>e.target.value} />
+        <Input placeholder='Search crypto currency' value={searchTerm} onChange={(e)=>setSearchTerm(e.target.value)} />
       </div>
+    )}
       <Row gutter={[32,32]} className='crypto-card-container'>
-        {cryptos.map((currency)=>(
-          <Col xs={24} sm={12} lg={6} className='crypto-card' key={currency.id}>
+        {cryptos?.map((currency)=>(
+          <Col xs={24} sm={12}  className='crypto-card' key={currency.id}>
             <Link to={`/crypto/${currency.id}`}>
               <Card 
                 title={`${currency.rank}. ${currency.name}`} 
