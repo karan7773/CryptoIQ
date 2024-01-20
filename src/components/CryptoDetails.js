@@ -1,20 +1,20 @@
-import React, {useState} from 'react'
-import HTMLReactParser from 'html-react-parser'
-import { useParams } from 'react-router-dom'
-import millify from 'millify'
-import {Col,Row,Typography,Select} from 'antd'
+import React, { useState } from 'react';
+import HTMLReactParser from 'html-react-parser';
+import { useParams } from 'react-router-dom';
+import millify from 'millify';
+import { Col, Row, Typography, Select } from 'antd';
 import { MoneyCollectOutlined, DollarCircleOutlined, FundOutlined, ExclamationCircleOutlined, StopOutlined, TrophyOutlined, CheckOutlined, NumberOutlined, ThunderboltOutlined } from '@ant-design/icons';
 
-import { useGetCryptoDetailsQuery,useGetCryptoHistoryQuery } from '../services/CryptoAPI'
-import Loader from './Loader'
+import { useGetCryptoDetailsQuery, useGetCryptoHistoryQuery } from '../services/CryptoAPI';
+import Loader from './Loader';
+import LineChart from './LineChart';
 
-const {Title,Text}=Typography
-const {Option}=Select
+const { Title, Text } = Typography;
+const { Option } = Select;
 
 const CryptoDetails = () => {
-  const {coinId}=useParams()
-  const [timeperiod,setTimeperiod]=useState('7d');
-  // console.log(coinId);
+  const { coinId } = useParams();
+  const [timeperiod, setTimeperiod] = useState('7d');
   const { data, isFetching } = useGetCryptoDetailsQuery(coinId);
   const { data: coinHistory } = useGetCryptoHistoryQuery({ coinId, timeperiod });
   const cryptoDetails = data?.data?.coin;
@@ -38,6 +38,7 @@ const CryptoDetails = () => {
     { title: 'Total Supply', value: `$ ${cryptoDetails?.supply?.total && millify(cryptoDetails?.supply?.total)}`, icon: <ExclamationCircleOutlined /> },
     { title: 'Circulating Supply', value: `$ ${cryptoDetails?.supply?.circulating && millify(cryptoDetails?.supply?.circulating)}`, icon: <ExclamationCircleOutlined /> },
   ];
+
   return (
     <Col className="coin-detail-container">
       <Col className="coin-heading-container">
@@ -49,7 +50,7 @@ const CryptoDetails = () => {
       <Select defaultValue="7d" className="select-timeperiod" placeholder="Select Timeperiod" onChange={(value) => setTimeperiod(value)}>
         {time.map((date) => <Option key={date}>{date}</Option>)}
       </Select>
-      {/* <LineChart coinHistory={coinHistory} currentPrice={millify(cryptoDetails?.price)} coinName={cryptoDetails?.name} /> */}
+      <LineChart coinHistory={coinHistory} currentPrice={millify(cryptoDetails?.price)} coinName={cryptoDetails?.name} />
       <Col className="stats-container">
         <Col className="coin-value-statistics">
           <Col className="coin-value-statistics-heading">
@@ -99,6 +100,6 @@ const CryptoDetails = () => {
       </Col>
     </Col>
   );
-}
+};
 
-export default CryptoDetails
+export default CryptoDetails;
