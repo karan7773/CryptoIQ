@@ -23,7 +23,7 @@ export const CryptoApi=createApi({
             query: ({ coinId, timeperiod }) => createRequest(`coin/${coinId}/history?timeperiod=${timeperiod}`),
         }),
         getExchanges: builder.query({
-            query: () => createRequest('/exchanges'),
+            query: (count) => createRequest(`/exchange/-zdvbieRdZ/coins??referenceCurrencyUuid=yhjMzLPhuIDl&limit=${count}&offset=0&orderBy=24hVolume&orderDirection=desc`),
         }),
         
     })

@@ -16,6 +16,7 @@ const LineChart = ({ coinHistory, currentPrice, coinName }) => {
   for (let i = 0; i < coinHistory?.data?.history?.length; i += 1) {
     coinTimestamp.push(new Date(coinHistory?.data?.history[i].timestamp).toLocaleDateString());
   }
+
   const data = {
     labels: coinTimestamp,
     datasets: [
@@ -29,7 +30,6 @@ const LineChart = ({ coinHistory, currentPrice, coinName }) => {
     ],
   };
 
-  // Register the CategoryScale before creating the options object
   ChartJS.register(CategoryScale);
 
   const options = {
@@ -41,6 +41,7 @@ const LineChart = ({ coinHistory, currentPrice, coinName }) => {
       ],
       y: [
         {
+          type: 'linear',
           ticks: {
             beginAtZero: true,
           },

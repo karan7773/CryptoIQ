@@ -3,17 +3,28 @@ import millify from 'millify';
 import { Collapse, Row, Col, Typography, Avatar } from 'antd';
 import HTMLReactParser from 'html-react-parser';
 
-import { useGetExchangesQuery } from '../services/CryptoAPI';
+import { useGetExchangesQuery,useGetCryptoDetailsQuery } from '../services/CryptoAPI';
 import Loader from './Loader';
+import { useEffect, useState } from 'react';
+
 
 const { Text } = Typography;
 const { Panel } = Collapse;
 
 const Exchanges = () => {
-  const { data, isFetching } = useGetExchangesQuery();
-  const exchangesList = data?.data?.exchanges;
- // Note: To access this endpoint you need premium plan
+  const { data, isFetching } = useGetExchangesQuery(50);
+  const exchangesList = data?.data?.coins;
+  // console.log(exchangesList);
+  // const [active,setactive]=useState(false);
   if (isFetching) return <Loader />;
+  // const GetDis=(coinId)=>{
+  //   const {data:coindetail} = useGetCryptoDetailsQuery(coinId);
+  //   console.log(coindetail?.data?.coin.description);
+    // const coinDescription=coindetail[coinId]
+    // console.log(coinDescription);
+    // return coinDescription.description;
+  // }
+  // useEffect(()=>{GetDis()},[active])
 
   return (
     <>
@@ -24,8 +35,11 @@ const Exchanges = () => {
         <Col span={6}>Change</Col>
       </Row>
       <Row>
-        {/* {exchangesList.map((exchange) => (
-          <Col span={24}>
+        {exchangesList?.map((exchange) => {
+          // const detail=GetDis(exchange.uuid)
+          return (
+            // onclick={setactive((prev)=>prev=!prev)
+          <Col span={24} >
             <Collapse>
               <Panel
                 key={exchange.uuid}
@@ -37,17 +51,17 @@ const Exchanges = () => {
                       <Avatar className="exchange-image" src={exchange.iconUrl} />
                       <Text><strong>{exchange.name}</strong></Text>
                     </Col>
-                    <Col span={6}>${millify(exchange.volume)}</Col>
+                    <Col span={6}>${millify(exchange["24hVolume"])}</Col>
                     <Col span={6}>{millify(exchange.numberOfMarkets)}</Col>
-                    <Col span={6}>{millify(exchange.marketShare)}%</Col>
+                    <Col span={6}>{millify(exchange.btcPrice)}%</Col>
                   </Row>
                   )}
               >
-                {HTMLReactParser(exchange.description || '')}
+                {}
               </Panel>
             </Collapse>
           </Col>
-        ))} */}
+        )})}
       </Row>
     </>
   );
