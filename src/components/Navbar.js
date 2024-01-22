@@ -1,9 +1,8 @@
 import React,{useState,useEffect} from 'react'
 import { Button,Menu,Typography,Avatar } from 'antd';
 import { Link } from 'react-router-dom';
-import { HomeOutlined,MoneyCollectFilled,BulbOutlined,FundOutlined ,MenuOutlined} from '@ant-design/icons';
-
-import icon from '../images/cryptocurrency.png'
+import { HomeOutlined,MoneyCollectFilled,FundOutlined ,MenuOutlined} from '@ant-design/icons';
+import logo from'../images/logo.png'
 
 const Navbar=()=>{
     const [activeMenu,setActiveMenu]=useState(true);
@@ -30,7 +29,7 @@ const Navbar=()=>{
     return(
         <div className='nav-container'>
             <div className='logo-container'>
-                <Avatar src={icon} size='large' />
+                <Avatar src={logo} size='large' />
                 <Typography.Title level={2} className='logo'>
                     <Link to="/">CryptoIQ</Link>
                 </Typography.Title>
